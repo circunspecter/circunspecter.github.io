@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        {% assign ptitle = site.name %}
+        {% if page.title %}
+            {% capture ptitle %}{{ page.title }} ~ {{ ptitle }}{% endcapture %}
+        {% endif %}
+        <title>{{ ptitle }}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{{ site.description }}">
+        <meta name="keywords" content="php,js,javascript,jquery,css">
+        <link rel="shortcut icon" href="{{ site.baseUrl }}/favicon.ico" type="image/x-icon" />
+        <link href="{{ site.baseUrl }}/assets/css/normalize.css" rel="stylesheet">
+        <link href="{{ site.baseUrl }}/assets/css/simplegrid.css" rel="stylesheet">
+        <link href="{{ site.baseUrl }}/assets/css/mee.css" rel="stylesheet">
+        <link href="{{ site.baseUrl }}/assets/css/pygments.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Arvo:700,400' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=PT+Serif:400,700' rel='stylesheet' type='text/css'>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="{{ site.baseUrl }}/assets/js/mee.js"></script>
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        {% include header.html %}
+        <div class="middle">
+            <div class="grid grid-pad">
+                <div class="col-1-1">
+                    <div class="content middle-content">
+                        {{ content }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include footer.html %}
+    </body>
+</html>

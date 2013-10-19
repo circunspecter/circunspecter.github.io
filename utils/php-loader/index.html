@@ -1,0 +1,199 @@
+---
+layout: post
+title: PHP Loader
+date: 2012-11-20
+permalink: "/"
+util: true
+util_pos: 1
+---
+
+<p>PHP class autoloader that follows the PSR-0 standard.</p>
+
+<div class="grid grid-pad ctable">
+    <div class="col-1-2">
+        <div class="content">
+            <div class="cheader">Features</div>
+            <div class="cbody">
+                <ul>
+                    <li>Specify paths for namespaces</li>
+                    <li>Possibility of requiring multiple files at once</li>
+                    <li>Send and receive variables from a required file</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-1-2">
+        <div class="content">
+            <div class="cheader">Requirements</div>
+            <div class="cbody">
+                <ul>
+                    <li>PHP 5.3+</li>
+                    <li>Fulfill <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0 standards</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>Public functions</h2>
+
+{% highlight php startinline %}
+/**
+ * Register an autoload function.
+ *
+ * @param array $pairs Namespace : Path pairs.
+ */
+static function register_autoloader(array $pairs = array())
+{% endhighlight %}
+
+{% highlight php startinline %}
+/**
+ * Autoload function.
+ *
+ * @param string $class_name The name of the class to load.
+ */
+static function autoload($class_name)
+{% endhighlight %}
+
+{% highlight php startinline %}
+/**
+ * Load all files located at specific folders.
+ *
+ * @param array $folders Folders paths to load.
+ */
+static function folders(array $folders = array())
+{% endhighlight %}
+
+{% highlight php startinline %}
+/**
+ * Load all given files.
+ *
+ * @param array $files Files paths to load.
+ */
+static function files(array $files = array())
+{% endhighlight %}
+
+{% highlight php startinline %}
+/**
+ * Load given file.
+ *
+ * @param array $file File to load.
+ * @param mixed $default Return value if file not exists.
+ * @param array $args Associative array with variables to use in required file.
+ * @param array $return_vars Indexed array with variables to return from required file.
+ */
+static function file($file, $default = NULL, array $args = array(), array $return_vars = array())
+{% endhighlight %}
+
+<h2>Usage</h2>
+
+<p>Basic initialization:</p>
+{% highlight php startinline %}
+require 'path/to/GrindNous/Loader.php';
+GrindNous\Loader::register_autoloader();
+{% endhighlight %}
+
+<p>Specify paths for different namespaces:</p>
+{% highlight php startinline %}
+require 'path/to/GrindNous/Loader.php';
+GrindNous\Loader::register_autoloader(array(
+  'MyNamespace' => '/path/to/namespace',
+  'MyNamespace\Models' => '/diferent/path/to/models',
+  'AnotherNamespace' => '/path/to/AnotherNamespace'
+));
+{% endhighlight %}
+
+<h2>Examples</h2>
+
+<p>Class autoloading:</p>
+{% highlight php startinline %}
+require 'GrindNous/Loader.php';
+\GrindNous\Loader::register_autoloader(array(
+  'Classes' => 'Classes',
+  'ExtPack\Classes' => 'ExtPack/Classes',
+  'Classes\ExtPack2' => 'ExtPack2',
+  'Underscores' => 'Underscores'
+));
+
+echo 'Class: '.\Classes\One::$prop.' | Folder: Classes/One.php';
+echo 'Class: '.\Classes\Utils\OneTool::$prop.' | Folder: Classes/Utils/OneTool.php';
+echo 'Class: '.\ExtPack\Classes\ExtClass::$prop.' | Folder: ExtPack/Classes/ExtClass.php';
+echo 'Class: '.\Classes\ExtPack2\AnotherExtClass::$prop.' | Folder: ExtPack2/AnotherExtClass.php';
+echo 'Class: '.Underscores_Util_Name::$prop.' | Folder: Underscores/Util/Name.php';
+{% endhighlight %}
+
+<p>In the above example <code>$prop</code> would return the class name and namespace. This will print:</p>
+{% highlight php startinline %}
+Class: Classes\One | Folder: Classes/One.php
+Class: Classes\Utils\OneTool | Folder: Classes/Utils/OneTool.php
+Class: ExtPack\Classes\ExtClass | Folder: ExtPack/Classes/ExtClass.php
+Class: Classes\ExtPack2\AnotherExtClass | Folder: ExtPack2/AnotherExtClass.php
+Class: Underscores_Util_Name | Folder: Underscores/Util/Name.php
+{% endhighlight %}
+
+<p>Load file:</p>
+{% highlight php startinline %}
+// incfolder/incfile.php
+return array(
+  'key1' => 'value1',
+  'key2' => 'value2'
+);
+{% endhighlight %}
+{% highlight php startinline %}
+$res = \GrindNous\Loader::file('incfolder/incfile.php');
+{% endhighlight %}
+{% highlight php startinline %}
+// $res
+array(2) {
+  ["key1"]=>
+  string(6) "value1"
+  ["key2"]=>
+  string(6) "value2"
+}
+{% endhighlight %}
+
+<p>Load file sending variables:</p>
+{% highlight php startinline %}
+// incfolder/incfile2.php
+if( ! isset($var)) $var = FALSE;
+return ($var === TRUE) ? 'OK' : 'FAIL' ;
+{% endhighlight %}
+{% highlight php startinline %}
+$res = \GrindNous\Loader::file('incfolder/incfile2.php', NULL, array('var' => TRUE));
+{% endhighlight %}
+{% highlight php startinline %}
+// $res
+string(2) "OK"
+{% endhighlight %}
+
+<p>Load file capturing variables:</p>
+{% highlight php startinline %}
+// incfolder/incfile3.php
+$loaded_file_var = 'Value from loaded file';
+return array(
+  'key1' => 'value1',
+  'key2' => 'value2'
+);
+{% endhighlight %}
+{% highlight php startinline %}
+$res = \GrindNous\Loader::file('incfolder/incfile3.php', NULL, array('var' => TRUE), array('loaded_file_var'));
+{% endhighlight %}
+{% highlight php startinline %}
+// $res
+array(2) {
+  ["__returned"]=>
+  array(2) {
+    ["key1"]=>
+    string(6) "value1"
+    ["key2"]=>
+    string(6) "value2"
+  }
+  ["loaded_file_var"]=>
+  string(22) "Value from loaded file"
+}
+{% endhighlight %}
+
+<p class="try-me">
+    <a class="c9-io" href="https://c9.io/mee/php-loader">Try me!</a>
+    <a class="github" href="https://c9.io/mee/minitabs">Downloame!</a>
+</p>

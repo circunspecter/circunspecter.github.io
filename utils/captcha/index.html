@@ -1,0 +1,289 @@
+---
+layout: post
+title: Captcha
+date: 2013-03-26
+permalink: "/"
+util: true
+util_pos: 2
+---
+
+<p>PHP Captcha system (session based): configurable look and different validation modes.</p>
+
+<div class="grid grid-pad ctable">
+    <div class="col-1-2">
+        <div class="content">
+            <div class="cheader">Features</div>
+            <div class="cbody">
+                <ul>
+                    <li>Configurable look</li>
+                    <li>Different types of questions/answers</li>
+                    <li>Timer: minimum and maximum time for validation</li>
+                    <li>Multiple instances</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-1-2">
+        <div class="content">
+            <div class="cheader">Requirements</div>
+            <div class="cbody">
+                <ul>
+                    <li>PHP 5.3+</li>
+                    <li>GD 2.0.1+ with FreeType support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>Usage</h2>
+
+<p>Instantiation:</p>
+{% highlight php startinline %}
+$captcha = new \GrindNous\Captcha\Captcha();
+{% endhighlight %}
+{% highlight php startinline %}
+// Customize
+$captcha = new \GrindNous\Captcha\Captcha(array(
+    'property' => 'value'
+));
+{% endhighlight %}
+
+<p>Accessing properties:</p>
+{% highlight php startinline %}
+// Get property
+$captcha->prop('property');
+{% endhighlight %}
+{% highlight php startinline %}
+// Set property
+$captcha->prop('property', 'value');
+{% endhighlight %}
+
+<p>Show captcha:</p>
+{% highlight php startinline %}
+// captcha-generator.php
+$captcha->render();
+// captcha-request-page.php
+<img src="captcha-generator.php" />
+{% endhighlight %}
+{% highlight php startinline %}
+// captcha-request-page.php
+$encodedImage = $captcha->base64();
+echo '<img src="'.$encodedImage.'" />';
+{% endhighlight %}
+
+<p>Validation:</p>
+{% highlight php startinline %}
+// verify-page.php
+if(\GrindNous\Captcha\Captcha::valid( $userPostedData ))
+    // Valid
+else
+    // Not valid
+{% endhighlight %}
+<p>Specifying the captcha to validate:</p>
+{% highlight php startinline %}
+// verify-page.php
+if(\GrindNous\Captcha\Captcha::valid( $userPostedData, $captchaName ))
+{% endhighlight %}
+
+<h2>Properties</h2>
+
+<div class="grid grid-pad ctable ctable-trans">
+    <div class="col-1-2">
+        <div class="content">
+            <div class="cbody">
+
+                <span class="hey">name</span> &mdash; Name of the session var that will contain the captcha information.
+{% highlight php startinline %}
+Default : 'default'
+Options : string
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">questionType</span> <sup>1</sup> &mdash; Specifies how will generate the validation code.
+{% highlight php startinline %}
+Default : normal
+Options : normal | ghost | strikethrough | notStrikethrough
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">ltr</span> &mdash; Left to right: indicates whether the introduction of characters have to be performed from left to right or vice versa.
+{% highlight php startinline %}
+Default : true
+Options : bool
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">minTimeLapse</span> &mdash; Seconds that must elapse, at least, to take into account the data sent by the user.
+{% highlight php startinline %}
+Default : 10
+Options : int
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">maxTimeLapse</span> &mdash; Elapsed seconds to mark the captcha as invalid.
+{% highlight php startinline %}
+Default : 600
+Options : int
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">width</span> &mdash; Image width.
+{% highlight php startinline %}
+Default : 140
+Options : int
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">height</span> &mdash; Image height.
+{% highlight php startinline %}
+Default : 60
+Options : int
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">imageType</span> &mdash; Image format.
+{% highlight php startinline %}
+Default : 'png'
+Options : 'jpeg' | 'gif' | 'png'
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">bgColor</span> <sup>2</sup> &mdash; Background color.
+{% highlight php startinline %}
+Default : '#fff'
+Options : string | array
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">textColor</span> <sup>2</sup> &mdash; Text color.
+{% highlight php startinline %}
+Default : '#333'
+Options : string | array
+{% endhighlight %}
+
+            </div>
+        </div>
+    </div>
+    <div class="col-1-2">
+        <div class="content">
+            <div class="cbody">
+                
+                <span class="hey">ghostText</span> &mdash; Display a second set of semitransparent chars.
+{% highlight php startinline %}
+Default : true
+Options : bool
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">ghostTextColor</span> <sup>2</sup> &mdash; Color of semitransparent chars.
+{% highlight php startinline %}
+Default : '#333'
+Options : string | array
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">lines</span> &mdash; Strikethrough characters randomly.
+{% highlight php startinline %}
+Default : true
+Options : bool
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">lineColor</span> <sup>2</sup> &mdash; Color of lines.
+{% highlight php startinline %}
+Default : '#333'
+Options : string | array
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">lineWidth</span> &mdash; Width of the lines.
+{% highlight php startinline %}
+Default : 2
+Options : int
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">circles</span> &mdash; Add semitransparent circles.
+{% highlight php startinline %}
+Default : true
+Options : bool
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">circleColor</span> <sup>2</sup> &mdash; Color of circles.
+{% highlight php startinline %}
+Default : '#333'
+Options : string | array
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">length</span> &mdash; Number of characters.
+{% highlight php startinline %}
+Default : 4
+Options : int
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">fontFile</span> <sup>3</sup> &mdash; TrueType font to use.
+{% highlight php startinline %}
+Default : 'ttf_molten/molten.ttf'
+Options : string
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">fontSize</span> &mdash; Font size.
+{% highlight php startinline %}
+Default : 22
+Options : int
+{% endhighlight %}
+
+                <div class="sep"></div>
+
+                <span class="hey">letterSpacing</span> &mdash; Character spacing.
+{% highlight php startinline %}
+Default : 0
+Options : int
+{% endhighlight %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<p><sup>1</sup> Each type of question will affect the valid response.</p>
+<p class="imagem"><img class="frame" src="{{ site.baseUrl }}/assets/resus/utils/captcha/big.png" alt="Minitabs basic thumb" /></p>
+<ul class="questionTypes">
+    <li><b>normal</b>: insert all opaque chars (affected by <code>textColor</code>).</li>
+    <li><b>ghost</b>: insert all semitransparent chars (affected by <code>ghostTextColor</code>).</li>
+    <li><b>strikethrough</b>: insert only the strikethrough chars.</li>
+    <li><b>notStrikethrough</b>: insert only the chars without strikethrough.</li>
+</ul>
+<p><sup>2</sup> Hexadecimal color value, string of comma separated RGB values or indexed array with RGB values.</p>
+<p><sup>3</sup> The font will be searched in the "fonts" folder starting from the location of the class file.</p>
+
+<p class="try-me">
+    <a class="c9-io" href="https://c9.io/mee/captcha">Try me!</a>
+    <a class="github" href="https://c9.io/mee/minitabs">Downloame!</a>
+    <a class="github" href="https://c9.io/mee/minitabs">check it out!</a>
+</p>

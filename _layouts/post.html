@@ -1,0 +1,36 @@
+---
+layout: default
+---
+
+<div class="grid grid-pad post-view">
+    <div class="post-title">
+        <img src="{{ site.baseUrl }}/assets/resus{{ page.url }}/image.jpg" alt="{{ page.title }} image" />
+        <h1>{{ page.title }}</h1>
+    </div>
+    <div class="col-2-12">
+        <div class="content">&nbsp;</div>
+    </div>
+    <div class="col-8-12">
+        <div class="content">
+            {{ content }}
+            <p class="post-meta">&mdash; {{ page.date | date: "%B %d, %Y" }}</p>
+            {% if page.disableComments != 1 %}
+            <div id="disqus_thread" class="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'circunspecter';
+                var disqus_identifier = '{{ page.date | date: "%Y%m%d" }}';
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-2-12">
+        <div class="content">&nbsp;</div>
+    </div>
+</div>

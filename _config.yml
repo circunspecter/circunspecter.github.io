@@ -1,0 +1,12 @@
+name: "Circunspecter's stuff"
+description: "Circunspecter's stuff"
+
+url: "http://localhost:4000"
+
+paginate: 10
+
+markdown: rdiscount
+permalink: "/glob/:title"
+pygments: true
+
+baseUrl: "/www/circunspecter.github.io/_site"

@@ -1,0 +1,78 @@
+---
+title: Kohana 3&#58; Create RSS feed
+layout: post
+tags:
+- PHP
+- Kohana
+---
+
+<p>How to create a simple <a href="http://validator.w3.org/feed/docs/rss2.html">RSS</a> feed with the <a href="http://kohanaframework.org/">Kohana framework</a> (3+) through <a href="http://kohanaframework.org/3.2/guide/api/Feed">Feed class</a> and her <a href="http://kohanaframework.org/3.2/guide/api/Feed#create">Create method</a>.</p>
+
+<p>The two parameters required to call <code>Feed::Create()</code>, are:</p>
+<p><code class="hey">$info</code> : array containing information about the feed.</p>
+<p><code class="hey">$items</code> : array with the elements/entries that will be served by the feed.</p>
+
+<p>The contents of the parameters:</p>
+
+{% highlight php startinline %}
+$info = array(
+    'title' => 'Feed title',
+    'pubDate' => date("D, d M Y H:i:s T"),
+    'description' => 'Feed description',
+    'link' => 'URL page for the feed',
+    'language' => 'en-us',
+);
+{% endhighlight %}
+
+<p>Feed info only requires "title", "link" and "description". There are more optional elements: <a href="http://validator.w3.org/feed/docs/rss2.html#optionalChannelElements">Optional channel elements</a>.</p> 
+
+{% highlight php startinline %}
+$items[] = array(
+    'title' => 'Title of the item',
+    'link' => 'Url of the item',
+    'description' => 'Item description/content',
+);
+{% endhighlight %}
+
+<p>Equally, further information can be added to each element: <a href="http://validator.w3.org/feed/docs/rss2.html#hrelementsOfLtitemgt">Elements of &lt;item&gt;</a>.</p>
+
+<p>Finally, would call the <code>create()</code> method, which would return the valid XML (default encoding is UTF-8).</p>
+
+{% highlight php startinline %}
+Feed::create($info, $items)
+{% endhighlight %}
+
+<p>Only remains to implement it. For example, creating an action within the controller that serve the blog entries:</p>
+
+{% highlight php startinline linenos %}
+public function action_rss()
+{
+    $this->auto_render = FALSE;
+    $info = array(
+        'title' => 'My blog feed',
+        'description' => 'My blog description',
+        'link' => 'http://example.com/blog',
+    );
+    $items = array();
+    $posts = ORM::factory('posts')->find_all();
+    foreach($posts as $post)
+    {
+        $items[] = array(
+            'title' => $post->title,
+            'link' => URL::site('blog/post/'.$post->id.'/'.URL::title($post->title, '-', TRUE)),
+            'description' => $post->content,
+        );
+    }
+    $this->response->headers('Content-Type', 'text/xml');
+    $this->response->body(Feed::create($info, $items));
+}
+{% endhighlight %}
+
+<p>When using Kohana 3.0, replace lines 19 and 20 by the following:</p>
+
+{% highlight php startinline %}
+$this->request->headers['Content-Type'] = 'text/xml';
+$this->request->response = Feed::create($info, $items);
+{% endhighlight %}
+
+<p>&nbsp;</p>

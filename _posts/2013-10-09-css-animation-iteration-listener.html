@@ -1,0 +1,127 @@
+---
+title: CSS Animation &amp; Iteration listener
+layout: post
+external: http://codepen.io/circunspecter/details/yjHrp
+disableComments: 1
+---
+
+<p><span class="hey">HTML</span></p>
+{% highlight html %}
+<div class="badi">
+  <div id="scannarr" class="glass glass-semi">
+    <div class="left"></div>
+    <div class="right"></div>
+  </div>
+</div>
+<div class="rails">
+  <div class="left"></div>
+  <div class="right"></div>
+</div>
+{% endhighlight %}
+
+<p><span class="hey">CSS</span></p>
+{% highlight css %}
+.badi {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 500px;
+    margin-top: -250px;
+    background: url(http://dl.dropboxusercontent.com/s/e4y83crhg96x9qi/body-2.png) top center no-repeat;
+}
+.badi .glass {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 50px;
+    border-width: 1px 0 1px 0;
+    border-color: #333;
+    border-style: solid;
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -webkit-box-shadow: 0 0 3px #666 inset;
+    -moz-box-shadow: 0 0 3px #666 inset;
+    box-shadow: 0 0 3px #666 inset;
+
+    -webkit-animation: glass 5s linear infinite alternate;
+    -moz-animation: glass 5s linear infinite alternate;
+    -ms-animation: glass 5s linear infinite alternate;
+    -o-animation: glass 5s linear infinite alternate;
+    animation: glass 5s linear infinite alternate;
+}
+@-webkit-keyframes glass {
+    to { top: 450px; background-position: 50% 100%; }
+}
+@-moz-keyframes glass {
+    to { top: 450px; background-position: 50% 100%; }
+}
+@-o-keyframes glass {
+    to { top: 450px; background-position: 50% 100%; }
+}
+@keyframes glass {
+    to { top: 450px; background-position: 50% 100%; }
+}
+.badi .glass-semi {
+    background-image: url(http://dl.dropboxusercontent.com/s/hjlumgrabk012d5/body-1.png);
+}
+.badi .glass-uuuuu {
+    background-image: url(http://dl.dropboxusercontent.com/s/ti4iihilvcttl2a/body-0.png);
+}
+.badi .glass div {
+    position: absolute;
+    top: -10px;
+    width: 30px;
+    height: 70px;
+    background-color: #333;
+    -webkit-border-radius: 0 10px 10px 0;
+    -moz-border-radius: 0 10px 10px 0;
+    border-radius: 0 10px 10px 0;
+    -webkit-box-shadow: 0 0 5px #333;
+    -moz-box-shadow: 0 0 5px #333;
+    box-shadow: 0 0 5px #333;
+}
+.badi .glass .left {
+    left: 0px;
+    -webkit-border-radius: 0 10px 10px 0;
+    -moz-border-radius: 0 10px 10px 0;
+    border-radius: 0 10px 10px 0;
+}
+.badi .glass .right {
+    right: 0px;
+    -webkit-border-radius: 10px 0 0 10px;
+    -moz-border-radius: 10px 0 0 10px;
+    border-radius: 10px 0 0 10px;
+}
+.rails div {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #eee;
+    -webkit-box-shadow: 0 0 5px #333;
+    -moz-box-shadow: 0 0 5px #333;
+    box-shadow: 0 0 5px #333;
+}
+.rails .left { left: 10px;}
+.rails .right { right: 10px;}
+{% endhighlight %}
+
+<p><span class="hey">JS</span></p>
+{% highlight js %}
+var ele = document.getElementById("scannarr");
+ele.addEventListener("webkitAnimationIteration", alistener, false);
+ele.addEventListener("MSAnimationIteration", alistener, false);
+ele.addEventListener("oanimationiteration", alistener, false);
+ele.addEventListener("animationiteration", alistener, false);
+
+function alistener(e) {
+  if (e.type.toLowerCase().indexOf("animationiteration") != -1)
+  {
+      var ele = document.getElementById("scannarr");
+      ele.className = (ele.className.indexOf('-semi') != -1)
+                    ? ele.className.replace('-semi', '-uuuuu')
+                    : ele.className.replace('-uuuuu', '-semi') ;
+  }
+}
+{% endhighlight %}

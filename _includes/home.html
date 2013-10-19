@@ -1,0 +1,55 @@
+<div class="home">
+    <div class="grid grid-pad">
+        <div class="col-7-12 list">
+            <div class="content">
+                <!-- GLOB -->
+                <div id="glob" class="sec">
+                    <h1 class="sec-title">glob</h1>
+                    <ul>
+                    {% for post in site.posts %}
+                        <li>
+                            {% if post.external %}
+                            <a href="{{ post.external }}">{{ post.title }}</a>
+                            <span class="ext ext-codepen"></span>
+                            {% else %}
+                            <a href="{{ site.baseUrl }}{{ post.url }}/">{{ post.title }}</a>
+                            {% endif %}
+                            <span class="date">{{ post.date | date: "%b %d, %Y" }}</span>
+                            <img class="himage" src="{{ site.baseUrl }}/assets/resus{{ post.url }}/image.jpg" />
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <!-- UTILS -->
+                <div id="utils" class="sec">
+                    <h1 class="sec-title">utils</h1>
+                    <ul>
+                    {% assign sorting_creepy_way = "" %}
+                    {% for i in (1..site.pages.size) %}
+                        {% for lpage in site.pages %}
+                            {% if lpage.util and lpage.util_pos == i %}
+                                {% capture sorting_creepy_way %}
+                                <li>
+                                    <a {% if lpage.url == page.url %}class="active"{% endif %} href="{{ site.baseUrl }}{{ lpage.url }}">{{ lpage.title }}</a>
+                                    <span class="date">{{ lpage.date | date: "%b %d, %Y" }}</span>
+                                    <img class="himage" src="{{ site.baseUrl }}/assets/resus{{ lpage.url }}image.jpg" />
+                                </li>
+                                {{ sorting_creepy_way }}
+                                {% endcapture %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {{ sorting_creepy_way }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-5-12 ballon">
+            <div class="content">
+                &nbsp;
+                <img class="anim2" src="{{ site.baseUrl }}/assets/img/ballon.png" alt="Ballon" />
+                <a href="#top"><img class="hide anim2" src="{{ site.baseUrl }}/assets/img/ballon-up.png" alt="Go top" /></a>
+            </div>
+        </div>
+    </div>
+</div>
