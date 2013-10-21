@@ -76,6 +76,7 @@ hr {
 .ctable .col-1-2 { padding: 0 !important; }
 .ctable .cheader {
     background-color: #f6f6f6;
+    border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     color: #666;
     padding: 10px 20px;
@@ -443,7 +444,7 @@ http://www.colorcombos.com/color-schemes/27/ColorCombo27.html
 
 /* POSTS */
 
-.posts {
+/*.posts {
     padding: 0 !important;
 }
 .posts .col-2-12,
@@ -488,7 +489,7 @@ http://www.colorcombos.com/color-schemes/27/ColorCombo27.html
     -webkit-box-shadow: 0 0 3px #666666;
     -moz-box-shadow: 0 0 3px #666666;
     box-shadow: 0 0 3px #666666;
-}
+}*/
 
 
 /* POST */
@@ -522,3 +523,42 @@ http://www.colorcombos.com/color-schemes/27/ColorCombo27.html
 /*.post-view .try-me a { border: 0 none; padding: 0; }*/
 
 .disqus_thread { margin-top: 40px; }
+
+@media (min-width: 768px) and (max-width: 979px) {
+    
+}
+@media (max-width: 767px) {
+    .ctable .col-1-2 { margin: 0 !important; }
+    /* HEADER */
+    .header,
+    .header .grid { padding: 0; }
+    .header-logo { display: none; }
+    .header-menu { text-align: center; }
+    .header-menu li { margin: 0 0.5em; }
+    /* HOME */
+    .home .ballon { display: none; }
+    .home .sec { padding-right: 60px; }
+    /* POST */
+    .post-view .post-title h1 { font-size: 5em; }
+}
+@media (max-width: 480px) {
+    body { font-size: 55%; }
+    /* HEADER */
+    .header-menu li { font-size: 3em; }
+    /* MIDDLE */
+    .middle .middle-content { padding-left: 0; }
+    /* HOME */
+    .home .grid,
+    .home .list { padding: 0; }
+    .home .sec { padding: 0 30px 0 0; }
+    .home .sec:first-child { margin-bottom: 20px; }
+    .home .sec-title {  }
+    .home li { margin: 10px 0; padding: 15px 0 0; }
+    .home li .date { top: 0; text-shadow: none; background-color: transparent; color: #999; width: 90px; padding: 0; text-align: right; }
+    .home li:hover .date { background-color: transparent; color: #666; text-shadow: none; }
+    .home li .ext { top: 0; right: -30px; }
+    /* POST */
+    .post-view .post-title img { display: none; }
+    .post-view .post-title h1 { font-size: 4em; color: #ccc; }
+    .post-view .col-2-12 { display: none; }
+}

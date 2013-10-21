@@ -14,7 +14,7 @@ layout: default
         <div class="content">
             {{ content }}
             <p class="post-meta">&mdash; {{ page.date | date: "%B %d, %Y" }}</p>
-            {% if page.disableComments != 1 %}
+            {% if site.commentsEnabled and page.disableComments != 1 %}
             <div id="disqus_thread" class="disqus_thread"></div>
             <script type="text/javascript">
                 var disqus_shortname = 'circunspecter';

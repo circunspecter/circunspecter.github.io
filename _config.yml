@@ -4,3 +4,4 @@ markdown: rdiscount
 permalink: "/glob/:title"
 pygments: true
 baseUrl: ""
+commentsEnabled: true
