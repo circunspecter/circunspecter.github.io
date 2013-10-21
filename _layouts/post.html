@@ -14,11 +14,15 @@ layout: default
         <div class="content">
             {{ content }}
             <p class="post-meta">&mdash; {{ page.date | date: "%B %d, %Y" }}</p>
+
             {% if site.commentsEnabled and page.disableComments != 1 %}
+            {% capture disqusUrl %}http://circunspecter.github.io{{ page.url | append:'/' }}{% endcapture %}
+            {{ disqusUrl | replace:'//','/' }}
             <div id="disqus_thread" class="disqus_thread"></div>
             <script type="text/javascript">
                 var disqus_shortname = 'circunspecter';
                 var disqus_identifier = '{{ page.date | date: "%Y%m%d" }}';
+                var disqus_url = '{{ disqusUrl }}';
                 (function() {
                     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
