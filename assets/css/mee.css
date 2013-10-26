@@ -4,30 +4,13 @@ img::selection {background: transparent;}
 img::-moz-selection {background: transparent;}
 body {-webkit-tap-highlight-color: #57c5d3; color: #fff;}
 
-/*html {
-    font-size: 100.01%;
-}*/
 body {
-    /*font-family: 'Arvo', serif;*/
-    /*font-family: 'Droid Sans', sans-serif;*/
     font-family: 'PT Serif', serif;
     font-size: 62.5%;
     line-height: 1.5;
     color: #333;
     background: none repeat scroll 0 0 #fff;
 }
-
-/*h1, h2, h3, h4, h5, h6 { font-weight: normal; color: #111; margin-top: 0; }
-
-h1 { font-size: 3em; line-height: 1; margin-bottom: 0.5em; }
-h2 { font-size: 2em; margin-bottom: 0.75em; }
-h3 { font-size: 1.5em; line-height: 1; margin-bottom: 1em; }
-h4 { font-size: 1.2em; line-height: 1.25; margin-bottom: 1.25em; }
-h5 { font-size: 1em; font-weight: bold; margin-bottom: 1.5em; }
-h6 { font-size: 1em; font-weight: bold; }
-
-h1 img, h2 img, h3 img,
-h4 img, h5 img, h6 img { margin: 0; }*/
 
 h1, h2, h3, h4, h5, h6, .header { font-weight: normal; font-family: 'Arvo', serif; }
 h1 { font-size: 3.5em; }
@@ -109,12 +92,8 @@ hr {
     font-weight: 700;
 }
 
-a:link, a:visited {
-    color: #333; /*color: #5986F0;*/ text-decoration: none;
-}
-a:focus, a:hover, a:active, a.jhover {
-    /*color: #005580;*/ /*color: #0088CC;*/ color: #CD5C5C; text-decoration: underline;
-}
+a:link, a:visited { color: #333; text-decoration: none; }
+a:focus, a:hover, a:active, a.jhover { color: #CD5C5C; text-decoration: underline; }
 
 .hide { display: none; }
 
@@ -139,7 +118,6 @@ a:focus, a:hover, a:active, a.jhover {
 }
 .try-me a:link, .try-me a:visited { background-color: #333; color: #6495ED !important; }
 .try-me a:focus, .try-me a:hover {
-    /*background-color: #444;*/
     -webkit-box-shadow: 0 0 8px #999, 0 1px 1px #999;
     -moz-box-shadow: 0 0 8px #999, 0 1px 1px #999;
     box-shadow: 0 0 8px #999, 0 1px 1px #999;
@@ -172,51 +150,18 @@ a:focus, a:hover, a:active, a.jhover {
     color: #CD5C5C !important;
 }
 
-/*
-.bar-link {
-    font-family: 'Arvo', serif;
-    border-radius: 5px 5px 5px 5px;
-    padding: 5px 5px 5px 40px !important;
-    border: 0 none !important;
-}
-.bar-link:link, .bar-link:visited { background-color: #ccc; }
-.bar-link:focus, .bar-link:hover, .bar-link:active { background-color: #333; }
-.bar-link span {
-    position: relative;
-    top: -2px;
-    font-size: 0.7em;
-    padding: 5px;
-    margin-left: 10px;
-    background-color: #fff;
-    color: #999;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    -moz-border-radius: 5px 5px 5px 5px;
-    -khtml-border-radius: 5px 5px 5px 5px;
-    border-radius: 5px 5px 5px 5px;
-}
-
-.bar-link-codepen {
-    background-image: url(../img/icons/bar-link-codepen.png);
-    background-position: left center;
-    background-repeat: no-repeat;
-}
-*/
 
 /* --- */
 
 
 .header {
-    /*font-size: 4em;*/
     padding: 20px 0;
-    border-top: 3px solid #333; /* or #587498*/
+    border-top: 3px solid #333;
 }
 .header .grid {
     padding: 0 0 20px 0;
     border-bottom: 3px solid #eee;
 }
-/*
-http://www.colorcombos.com/color-schemes/27/ColorCombo27.html
-*/
 .header a {}
 .header a:link, .header a:visited { color: #333; }
 .header a:focus, .header a:hover, .header a:active { color: #CD5C5C; text-decoration: none; }
@@ -442,56 +387,6 @@ http://www.colorcombos.com/color-schemes/27/ColorCombo27.html
 }
 
 
-/* POSTS */
-
-/*.posts {
-    padding: 0 !important;
-}
-.posts .col-2-12,
-.posts .col-8-12 { padding: 0 !important; }
-.posts-list {}
-.posts-post {
-    position: relative;
-    margin: 3em 0;
-    padding-left: 140px;
-}
-.posts-post .title {
-}
-.posts-post .title h2 {
-    font-family: 'PT Serif', serif;
-    font-size: 4em;
-    line-height: 1;
-    margin: 0;
-}
-.posts-post .title a {
-    text-decoration: none;
-    font-weight: 700;
-}
-.posts-post .title a:link, .posts-post .title a:visited { color: #CD5C5C; }
-.posts-post .title a:focus, .posts-post .title a:hover,
-.posts-post .title a:active, .posts-post .title a.jhover { color: #666; }
-.posts-post .intro {
-}
-.posts-post .date {
-    font-family: 'Arvo', serif;
-    color: #999;
-    font-size: 1.2em;
-}
-.posts-post .image {
-    background-color: #eee;
-    height: 60px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 120px;
-}
-.posts-post .image img {
-    -webkit-box-shadow: 0 0 3px #666666;
-    -moz-box-shadow: 0 0 3px #666666;
-    box-shadow: 0 0 3px #666666;
-}*/
-
-
 /* POST */
 
 .post-view {
@@ -520,13 +415,21 @@ http://www.colorcombos.com/color-schemes/27/ColorCombo27.html
 .post-view a { text-decoration: none; padding-bottom: 2px; }
 .post-view a:link, .post-view a:visited { color: #CD5C5C; border: 0; }
 .post-view a:focus, .post-view a:hover, .post-view a:active, .post-view a.jhover { color: #CD5C5C; border-bottom: 1px solid #999; }
-/*.post-view .try-me a { border: 0 none; padding: 0; }*/
+
+
+/* DISQUS */
 
 .disqus_thread { margin-top: 40px; }
 
-@media (min-width: 768px) and (max-width: 979px) {
-    
+
+/* GITHUB-GIST */
+
+.gist .gist-file .gist-data {
+    font-size: 1.2em !important;
+    max-height: 400px;
 }
+
+
 @media (max-width: 767px) {
     .ctable .col-1-2 { margin: 0 !important; }
     /* HEADER */
