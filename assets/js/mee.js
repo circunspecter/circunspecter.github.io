@@ -1,5 +1,5 @@
 $(function () {
-    if($('.middle .home').length) // AND WIDTH IS > 767px !
+    if($('.middle .home').length)
     {
         $('.home .ballon img').addClass('jfixed');
         balloncen();
