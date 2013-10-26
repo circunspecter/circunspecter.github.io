@@ -1,0 +1,321 @@
+---
+title: Arr&#58; breaking PHP's arrays
+layout: post
+tags:
+- PHP
+- Class
+- Arrays
+---
+
+<p>With the help of the <a href="http://en.wikipedia.org/wiki/Acme_Corporation">Acme Corporation</a>, I bring a PHP class to work with array collections: grouping, filtering, keys renaming and little more.</p>
+
+<h2>Class</h2>
+
+<script src="https://gist.github.com/circunspecter/7169165.js"></script>
+
+<h2>Let's put on the safety glasses</h2>
+
+{% highlight php startinline %}
+// Dummy contents
+$posts = array(
+    array('id' => 1, 'cat' => 'php', 'author' => 'Michael Campbell', 'content' => 'php content 1'),
+    array('id' => 2, 'cat' => 'php', 'author' => 'Stella Kelly',     'content' => 'php content 2'),
+    array('id' => 3, 'cat' => 'css', 'author' => 'Lisa Campbell',    'content' => 'css content 1'),
+    array('id' => 4, 'cat' => 'js',  'author' => 'Richard Hansen',   'content' => 'js content 1'),
+    array('id' => 5, 'cat' => 'php', 'author' => 'Michael Hansen',   'content' => 'php content 3'),
+    array('id' => 6, 'cat' => 'js',  'author' => 'Richard Hansen',   'content' => 'js content 2'),
+    array('id' => 7, 'cat' => 'css', 'author' => 'Lisa Campbell',    'content' => 'css content 2'),
+    array('id' => 8, 'cat' => 'js',  'author' => 'Doris Christmas',  'content' => 'js content 3'),
+    array('id' => 9, 'cat' => 'php', 'author' => 'Lisa Campbell',    'content' => 'php content 4'),
+);
+{% endhighlight %}
+
+<p>Group results by category name:</p>
+
+{% highlight php startinline %}
+\AcmeCorp\Arr::from($posts)->groupBy('cat')->get();
+{% endhighlight %}
+
+<pre>
+Array
+(
+    [php] => Array
+            [0] => Array
+                    [id] => 1
+                    ...
+            [1] => Array
+                    [id] => 2
+                    ...
+            [2] => Array
+                    [id] => 5
+                    ...
+            [3] => Array
+                    [id] => 9
+                    ...
+    [css] => Array
+            [0] => Array
+                    [id] => 3
+                    ...
+            [1] => Array
+                    [id] => 7
+                    ...
+    [js] => Array
+            [0] => Array
+                    [id] => 4
+                    ...
+            [1] => Array
+                    [id] => 6
+                    ...
+            [2] => Array
+                    [id] => 8
+                    ...
+)
+</pre>
+
+<p>Group results by category name and filter columns:</p>
+
+{% highlight php startinline %}
+\AcmeCorp\Arr::from($posts)->groupBy('cat')->filterKeys('content')->get();
+{% endhighlight %}
+
+<pre>
+Array
+(
+    [php] => Array
+            [0] => Array
+                    [content] => php content 1
+            [1] => Array
+                    [content] => php content 2
+            [2] => Array
+                    [content] => php content 3
+            [3] => Array
+                    [content] => php content 4
+    [css] => Array
+            [0] => Array
+                    [content] => css content 1
+            [1] => Array
+                    [content] => css content 2
+    [js] => Array
+            [0] => Array
+                    [content] => js content 1
+            [1] => Array
+                    [content] => js content 2
+            [2] => Array
+                    [content] => js content 3
+)
+</pre>
+
+<p>Group results by category name, filter columns and unwrap:</p>
+
+{% highlight php startinline %}
+\AcmeCorp\Arr::from($posts)->groupBy('cat')->filterKeys('content')->unwrap()->get();
+{% endhighlight %}
+
+<pre>
+Array
+(
+    [php] => Array
+            [0] => php content 1
+            [1] => php content 2
+            [2] => php content 3
+            [3] => php content 4
+    [css] => Array
+            [0] => css content 1
+            [1] => css content 2
+    [js] => Array
+            [0] => js content 1
+            [1] => js content 2
+            [2] => js content 3
+)
+</pre>
+
+<p>Group results by category and author:</p>
+
+{% highlight php startinline %}
+\AcmeCorp\Arr::from($posts)->groupBy('cat')->groupBy('author')->get();
+{% endhighlight %}
+
+<pre>
+Array
+(
+    [php] => Array
+            [Michael Campbell] => Array
+                    [0] => Array
+                            [id] => 1
+                            ...
+            [Stella Kelly] => Array
+                    [0] => Array
+                            [id] => 2
+                            ...
+            [Michael Hansen] => Array
+                    [0] => Array
+                            [id] => 5
+                            ...
+            [Lisa Campbell] => Array
+                    [0] => Array
+                            [id] => 9
+                            ...
+    [css] => Array
+            [Lisa Campbell] => Array
+                    [0] => Array
+                            [id] => 3
+                            ...
+                    [1] => Array
+                            [id] => 7
+                            ...
+    [js] => Array
+            [Richard Hansen] => Array
+                    [0] => Array
+                            [id] => 4
+                            ...
+                    [1] => Array
+                            [id] => 6
+                            ...
+            [Doris Christmas] => Array
+                    [0] => Array
+                            [id] => 8
+                            ...
+)
+</pre>
+
+<hr>
+
+{% highlight php startinline %}
+// Dummy contents
+$i18nResults = array(
+    array(
+        'blogpost_id' => 1,
+        'blogpost_date' => 1359987879,
+        'blogposti18n_id' => 1,
+        'blogposti18n_blogpost_id' => 1,
+        'blogposti18n_lang_id' => 1,
+        'blogposti18n_title' => 'Título para 1',
+    ),
+    array(
+        'blogpost_id' => 1,
+        'blogpost_date' => 1359987879,
+        'blogposti18n_id' => 2,
+        'blogposti18n_blogpost_id' => 1,
+        'blogposti18n_lang_id' => 2,
+        'blogposti18n_title' => 'Title for 1',
+    ),
+    array(
+        'blogpost_id' => 2,
+        'blogpost_date' => 1359988171,
+        'blogposti18n_id' => 3,
+        'blogposti18n_blogpost_id' => 2,
+        'blogposti18n_lang_id' => 1,
+        'blogposti18n_title' => 'Título para 2',
+    ),
+    array(
+        'blogpost_id' => 2,
+        'blogpost_date' => 1359988171,
+        'blogposti18n_id' => 4,
+        'blogposti18n_blogpost_id' => 2,
+        'blogposti18n_lang_id' => 2,
+        'blogposti18n_title' => 'Title for 2',
+    ),
+);
+{% endhighlight %}
+
+<p>Group by post:</p>
+
+{% highlight php startinline %}
+$groupPosts = \AcmeCorp\Arr::from($i18nResults)->groupBy('blogpost_id')->get();
+{% endhighlight %}
+
+<pre>
+Array
+(
+    [1] => Array
+            [0] => Array
+                    [blogpost_id] => 1
+                    [blogpost_date] => 1359987879
+                    [blogposti18n_id] => 1
+                    [blogposti18n_blogpost_id] => 1
+                    [blogposti18n_lang_id] => 1
+                    [blogposti18n_title] => Título para 1
+            [1] => Array
+                    [blogpost_id] => 1
+                    [blogpost_date] => 1359987879
+                    [blogposti18n_id] => 2
+                    [blogposti18n_blogpost_id] => 1
+                    [blogposti18n_lang_id] => 2
+                    [blogposti18n_title] => Title for 1
+    [2] => Array
+            [0] => Array
+                    [blogpost_id] => 2
+                    [blogpost_date] => 1359988171
+                    [blogposti18n_id] => 3
+                    [blogposti18n_blogpost_id] => 2
+                    [blogposti18n_lang_id] => 1
+                    [blogposti18n_title] => Título para 2
+            [1] => Array
+                    [blogpost_id] => 2
+                    [blogpost_date] => 1359988171
+                    [blogposti18n_id] => 4
+                    [blogposti18n_blogpost_id] => 2
+                    [blogposti18n_lang_id] => 2
+                    [blogposti18n_title] => Title for 2
+)
+</pre>
+
+<p>Organize and makeup:</p>
+
+{% highlight php startinline %}
+$results = array();
+foreach($groupPosts as $post)
+{
+    $results[] = array(
+        'base' => \AcmeCorp\Arr::from($post)
+                                ->filterKeysStarts('blogpost_')
+                                ->strReplaceKeysStart('blogpost_', '')
+                                ->get()[0],
+        'i18n' => \AcmeCorp\Arr::from($post)
+                                ->filterKeysStarts('blogposti18n_')
+                                ->strReplaceKeysStart('blogposti18n_', '')
+                                ->get()
+    );
+}
+{% endhighlight %}
+
+<pre>
+Array
+(
+    [0] => Array
+            [base] => Array
+                    [id] => 1
+                    [date] => 1359987879
+            [i18n] => Array
+                    [0] => Array
+                            [id] => 1
+                            [blogpost_id] => 1
+                            [lang_id] => 1
+                            [title] => Título para 1
+                    [1] => Array
+                            [id] => 2
+                            [blogpost_id] => 1
+                            [lang_id] => 2
+                            [title] => Title for 1
+    [1] => Array
+            [base] => Array
+                    [id] => 2
+                    [date] => 1359988171
+            [i18n] => Array
+                    [0] => Array
+                            [id] => 3
+                            [blogpost_id] => 2
+                            [lang_id] => 1
+                            [title] => Título para 2
+                    [1] => Array
+                            [id] => 4
+                            [blogpost_id] => 2
+                            [lang_id] => 2
+                            [title] => Title for 2
+)
+</pre>
+
+<p class="try-me">
+    <a class="c9-io" href="https://c9.io/mee/phparr">Try me!</a>
+    <a class="github" href="https://gist.github.com/circunspecter/7169165">View on GitHub</a>
+</p>
