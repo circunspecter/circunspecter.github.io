@@ -139,6 +139,12 @@ a:focus, a:hover, a:active, a.jhover { color: #CD5C5C; text-decoration: underlin
     background-position: 9% 50%;
     padding-left: 50px !important;
 }
+.try-me a.phpfiddle {
+    background-image: url(../img/icons/phpfiddle.png);
+    background-repeat: no-repeat;
+    background-position: 13% 50%;
+    padding-left: 45px !important;
+}
 .try-me a.github {
     background-image: url(../img/icons/github.png);
     background-repeat: no-repeat;
