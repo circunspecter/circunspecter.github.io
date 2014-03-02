@@ -1,0 +1,62 @@
+---
+title: Laravel&#58; cascading custom configuration path
+layout: post
+tags:
+- PHP
+- Laravel
+- Laravel 4
+---
+
+<p>For those times when you want to host configuration files in a custom path but also want changes "cascade" over the original files; just like the environment ones.
+</p>
+
+<p>So we need to register a configuration namespace with the resources path and a callback to merge settings when the configuration group, for the given namespace, is loaded the first time.</p>
+
+{% highlight php startinline %}
+Config::addNamespace('myapp', '/path/to/my/custom/config/folder');
+
+Config::afterLoading('myapp', function($namespace, $group, $items)
+{
+    // Prevent to load base settings if they have been previously loaded
+    $default = isset(Config::getItems()['*::'.$group])
+            ? Config::getItems()['*::'.$group]
+            : Config::getLoader()->load(App::environment(), $group) ;
+
+    return array_replace_recursive($default, $items);
+});
+{% endhighlight %}
+
+<p>So if, for example, we have:</p>
+
+{% highlight php startinline %}
+// app/config/app.php
+return [
+    ...
+    'timezone'  => 'UTC',
+    'locale'    => 'en',
+    ...
+];
+
+// somewhere/far/away/config/app.php
+return [
+    'timezone'  => 'Europe/Madrid',
+];
+{% endhighlight %}
+
+<p>And we access those properties, obtain:</p>
+
+{% highlight php startinline %}
+Config::get('myapp::app.timezone'); // 'Europe/Madrid'
+Config::get('myapp::app.locale');   // 'en'
+{% endhighlight %}
+
+<p>Note that this does not prevent to use specific environment settings.</p>
+
+<p>You can take a look:</p>
+
+<ul>
+    <li><code>Illuminate\Config\Repository</code></li>
+    <li><code>Illuminate\Config\FileLoader</code></li>
+</ul>
+
+<p>&nbsp;</p>
