@@ -20,6 +20,7 @@ h4 { font-size: 2em; }
 h5, h6 { font-size: 1.9em; }
 
 p, li, .ctable { font-size: 1.9em; }
+li p, .ctable { font-size: 1em; }
 p, pre { margin: 1em 0; }
 pre {
     background-color: #fff;
@@ -34,8 +35,9 @@ pre {
     overflow-x: auto;
     white-space: pre;
 }
-p code,
-li code {
+li pre { font-size: 0.7em; }
+p > code,
+li > code {
     background-color: #F6F6F6;
     border: 1px solid #eee;
     color: #555;
