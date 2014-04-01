@@ -1,0 +1,170 @@
+---
+title: Extending Laravel's Translator (IoC)&#58; Lang setter
+layout: post
+tags:
+- PHP
+- Laravel
+- Laravel 4
+- Localization
+---
+
+<p>It may be the case that you need to set translations dynamically, so it will be necessary to replace the Translator with one that adds this functionality. To achieve this, we will extend the service provider and bind our vitamined version to the IoC container.</p>
+
+<p>First we will create our Translator class. We will repress the urge to reinvent the wheel (because it is frowned upon, today we are lazy and I escape from a possible squared), so we will extend the Laravel translator:</p>
+
+{% highlight php startinline %}
+namespace Acme\Extensions\Translation;
+
+use Illuminate\Translation\Translator as LaravelTranslator;
+
+class Translator extends LaravelTranslator
+{
+    /**
+     * Set translation.
+     *
+     * @param  string  $key
+     * @param  mixed   $value
+     * @param  string  $locale
+     * @return void
+     */
+    public function set($key, $value, $locale = null)
+    {
+        list($namespace, $group, $item) = $this->parseKey($key);
+
+        if(null === $locale)
+        {
+            $locale = $this->locale;
+        }
+
+        // Load given group defaults if exists
+        $this->load($namespace, $group, $locale);
+
+        array_set($this->loaded[$namespace][$group][$locale], $item, $value);
+    }
+
+    /**
+     * Set multiple translations.
+     *
+     * @param  array   $items   Format: [group => [key => value]]
+     * @param  string  $locale
+     * @return void
+     */
+    public function add(array $items, $locale = null)
+    {
+        if(null === $locale)
+        {
+            $locale = $this->locale;
+        }
+
+        foreach($items as $group => $translations)
+        {
+            // Build key to parse
+            $key = $group.'.'.key($translations);
+
+            list($namespace, $group) = $this->parseKey($key);
+
+            // Load given group defaults if exists
+            $this->load($namespace, $group, $locale);
+
+            foreach($translations as $item => $value)
+            {
+                array_set($this->loaded[$namespace][$group][$locale], $item, $value);
+            }
+        }
+    }
+}
+{% endhighlight %}
+
+<p>Now, we are going to create a new Translator service provider which, again, extend the provider offered by Laravel. This is where we bind our Translator class to the Container, replacing the Laravel one's:</p>
+
+{% highlight php startinline %}
+namespace Acme\Providers;
+
+use Illuminate\Translation\TranslationServiceProvider;
+
+class Translator extends TranslationServiceProvider
+{
+    public function boot()
+    {
+        $this->app->bindShared('translator', function($app)
+        {
+            $loader = $app['translation.loader'];
+            $locale = $app['config']['app.locale'];
+
+            $trans = new \Acme\Extensions\Translation\Translator($loader, $locale);
+
+            $trans->setFallback($app['config']['app.fallback_locale']);
+
+            return $trans;
+        });
+
+        parent::boot();
+    }
+}
+{% endhighlight %}
+
+<p>Finally, we will tell our application which provider have to use:</p>
+
+{% highlight php startinline %}
+// app/config/app.php
+'providers' => array(
+    ...
+    //'Illuminate\Translation\TranslationServiceProvider',
+    'Acme\Providers\Translator',
+    ...
+);
+{% endhighlight %}
+
+<p>That's all. We take our wheel and...</p>
+
+{% highlight php startinline %}
+// Set/replace single translation
+Lang::set('group.string', 'translation');
+
+// Set/replace multiple translations
+Lang::add([
+    'group' => [
+        'january' => 'Enero',
+        'february' => 'Febrero',
+        ...
+        'week.monday' => 'Lunes',
+        'week.tuesday' => 'Martes',
+        ...
+    ],
+]);
+{% endhighlight %}
+
+<p>In both cases we can use dot notation.</p>
+
+<hr>
+
+<p>It should be clarified that, while this procedure is proposed in the official documentation, given that the <code>boot()</code> method of the service provider is used to bind/replace the class, it's possible that another portion of the application tries to access the instance before that method has been executed, getting, in this case, an instance of the Laravel Translator class.</p>
+
+<p>For example, the <code>boot()</code> method from another service provider makes a call to our Translator before it has been "booted". Probably this is more the exception than the rule, but in any case, I propose a couple of solutions:</p>
+
+<ol>
+    <li>
+        <p>I suppose the most obvious is to stop using the <code>boot()</code> method in favor of the <code>register()</code>, as it should be. We can imagine why not, but since we have this problem, we can make the change and be blessed at the same time (I don't take responsibility for the heat that you can suffer in the future).</p>
+    </li>
+    <li>
+        <p>Probably the best option is to register a <code>booted</code> listener and put there the rebel code; that will be executed after the application has booted.</p>
+{% highlight php startinline %}
+App::booted(function($app) {});
+{% endhighlight %}
+        <p>See: <code>Illuminate\Foundation\Application::booted()</code>.</p>
+    </li>
+</ol>
+
+<p>Last, note that registering the provider manually, as shown below, does not imply the immediate execution of the <code>boot()</code> method.</p>
+{% highlight php startinline %}
+App::register('Acme\Providers\Translator');
+{% endhighlight %}
+<p>See: <code>Illuminate\Foundation\Application::register()</code>.</p>
+
+<p>Documentation:</p>
+
+<ul>
+    <li><a href="http://laravel.com/docs/extending#ioc-based-extension">Laravel - IoC Based Extension</a></li>
+</ul>
+
+<p>&nbsp;</p>
