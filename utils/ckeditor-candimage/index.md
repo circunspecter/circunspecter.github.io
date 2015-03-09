@@ -2,7 +2,7 @@
 layout: post
 title: CKEditor Candimage
 date: 2015-03-09
-permalink: "/"
+permalink: "utils/ckeditor-candimage/"
 util: true
 util_pos: 4
 ---
