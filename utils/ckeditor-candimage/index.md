@@ -5,7 +5,6 @@ date: 2015-03-09
 permalink: "utils/ckeditor-candimage/"
 util: true
 util_pos: 4
-meta_description: "CKEditor plugin that allows upload and browse images."
 ---
 
 CKEditor plugin that allows upload and browse images.
