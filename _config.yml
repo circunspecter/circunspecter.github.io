@@ -1,4 +1,5 @@
 name: "Circunspecter's stuff"
+description: "Circunspecter's stuff"
 markdown: rdiscount
 permalink: "/glob/:title"
 pygments: true
