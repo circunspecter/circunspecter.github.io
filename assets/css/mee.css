@@ -305,6 +305,12 @@ a:focus, a:hover, a:active, a.jhover { color: #CD5C5C; text-decoration: underlin
 .home li:hover .ext-codepen {
     background: url(../img/icons/ext-codepen-on.png) top left no-repeat;
 }
+.home li .ext-web {
+    background: url(../img/icons/ext-web-off.png) top left no-repeat;
+}
+.home li:hover .ext-web {
+    background: url(../img/icons/ext-web-on.png) top left no-repeat;
+}
 .home li .himage { display: none; }
 
 .home .ballon {}
