@@ -1,7 +1,5 @@
 name: "Circunspecter's stuff"
-markdown: rdiscount
 permalink: "/glob/:title"
-pygments: true
 baseUrl: ""
 commentsEnabled: true
 include: ['utils']
