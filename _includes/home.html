@@ -12,7 +12,7 @@
                             <a href="{{ post.external }}">{{ post.title }}</a>
                             <span class="ext ext-codepen"></span>
                             {% else %}
-                            <a href="{{ site.baseUrl }}{{ post.url }}/">{{ post.title }}</a>
+                            <a href="{{ site.baseUrl }}{{ post.url }}">{{ post.title }}</a>
                             {% endif %}
                             <span class="date">{{ post.date | date: "%b %d, %Y" }}</span>
                             <img class="himage" src="{{ site.baseUrl }}/assets/resus{{ post.url }}/image.jpg" />

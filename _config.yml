@@ -3,3 +3,4 @@ permalink: "/glob/:title"
 baseUrl: ""
 commentsEnabled: true
 include: ['utils']
+exclude: ['nclude-dependencies']
