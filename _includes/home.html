@@ -37,7 +37,7 @@
                                     <a {% if lpage.url == page.url %}class="active"{% endif %} href="{{ site.baseUrl }}{{ lpage.url }}">{{ lpage.title }}</a>
                                     {% endif %}
                                     <span class="date">{{ lpage.date | date: "%b %d, %Y" }}</span>
-                                    <img class="himage" src="{{ site.baseUrl }}/assets/resus{{ lpage.url }}image.jpg" />
+                                    <img class="himage" src="{{ site.baseUrl }}/assets/resus{{ lpage.url }}/image.jpg" />
                                 </li>
                                 {{ sorting_creepy_way }}
                                 {% endcapture %}
